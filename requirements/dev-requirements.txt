@@ -1,3 +1,13 @@
 -r base-requirements.txt
 
+# Code quality
+# ------------------------------------------------------------------------------
+flake8 # https://github.com/PyCQA/flake8
+flake8-isort  # https://github.com/gforcada/flake8-isort
+black  # https://github.com/psf/black
+coverage  # https://github.com/nedbat/coveragepy
+pre-commit  # https://github.com/pre-commit/pre-commit
+
+# Test
+# ------------------------------------------------------------------------------
 pytest
