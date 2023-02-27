@@ -337,3 +337,6 @@ tags
 
 # ASDF local
 .tool-versions
+
+# main.py
+main.py
