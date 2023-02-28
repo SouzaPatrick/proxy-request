@@ -339,9 +339,7 @@ tags
 .tool-versions
 
 # config
-main.py
 ngrok.yml
-console.py
 
 #sqlite
 /database.db
