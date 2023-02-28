@@ -5,7 +5,6 @@ import requests
 from settings import TIMEOUT_CHECK_PROXY
 
 
-
 class CheckProxyRequest:
     def __init__(
         self,

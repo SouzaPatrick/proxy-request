@@ -1,4 +1,4 @@
-exclude: "^docs/"
+exclude: "^docs/|app/database.py"
 default_stages: [commit]
 
 repos:

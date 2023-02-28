@@ -11,7 +11,3 @@ pre-commit  # https://github.com/pre-commit/pre-commit
 # Test
 # ------------------------------------------------------------------------------
 pytest
-
-# App Flask
-Flask
-flask-ngrok2

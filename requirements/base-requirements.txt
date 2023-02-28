@@ -1,4 +1,12 @@
+# Scrapyng
 requests
 bs4
+
+# Settings
 python-decouple
-unipath
+
+# Database
+sqlmodel
+
+# Console
+rich
