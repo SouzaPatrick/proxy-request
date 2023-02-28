@@ -2,11 +2,14 @@ from typing import Optional
 
 import requests
 
+from settings import TIMEOUT_CHECK_PROXY
 
-class ProxyRequest:
+
+
+class CheckProxyRequest:
     def __init__(
         self,
-        timeout: int = 10,
+        timeout: int = TIMEOUT_CHECK_PROXY,
         destination_host: str = "",
         destination_host_port: int = 80,
     ) -> None:

@@ -338,5 +338,6 @@ tags
 # ASDF local
 .tool-versions
 
-# main.py
+# config
 main.py
+ngrok.yml

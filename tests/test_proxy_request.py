@@ -2,7 +2,6 @@ from typing import NoReturn
 
 import pytest
 import requests
-
 from proxy_request import ProxyRequest
 
 
