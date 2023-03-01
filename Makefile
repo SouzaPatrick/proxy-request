@@ -4,6 +4,11 @@ format: ## Format all code files
 	@pre-commit run --all-files
 
 
+## @ Start project
+.PHONY: install
+install: ## Create/Reset the database
+	@python generate_db.py
+
 ## @ Commands
 .PHONY: proxy console update
 proxy: ## Download lists of public proxies
