@@ -1,44 +1,33 @@
-from app.utils.extract_proxy_list.website_table import extract_proxy_list
-from app.check_proxy_request import CheckProxyRequest
-from typing import Optional
-import requests
-from settings import DESTINATION_HOST, TTL_PROXY
-from app.db_functions import create_proxies, exist_proxy
-from app.models import Proxy
 from datetime import datetime
 
-proxies: list[str] = extract_proxy_list(url='https://free-proxy-list.net/')
-_proxies = []
-for proxy in proxies:
-    # Check if the proxy already exists in the database, if it does, ignore the check
-    proxy_ip, proxy_port = proxy.split(":")
-    if not exist_proxy(ip=proxy_ip, port=int(proxy_port)):
-        # Proxy validate
-        try:
-            proxy_request: Optional[requests.Response] = CheckProxyRequest(destination_host=DESTINATION_HOST).request(host_and_port=proxy)
-        except:
-            status_check: bool = False
-            proxy_request: Optional[requests.Response] = None
+from app.db_functions import create_proxies, exist_proxy, get_extract_methods
+from app.models import Proxy, ExtractionMethod
+from app.utils.extract_proxy_list.search_method import search_method
+from settings import TTL_PROXY
+from app.utils.proxy_request import proxy_request
 
-        if proxy_request:
-            status_check: bool = True
-            print(proxy)
-            print(proxy_request.status_code)
-            print(proxy_request.json())
-            print('--------------------------------------------------------')
-        else:
-            status_check: bool = False
+extract_methods: list[ExtractionMethod] = get_extract_methods()
 
-        proxy_ip, proxy_port = proxy.split(':')
-        _proxies.append(Proxy(ip=proxy_ip, port=int(proxy_port), status_check=status_check, ttl=TTL_PROXY, last_check=datetime.now()))
+for extract_method in extract_methods:
+    proxies: list[str] = search_method(extract_method=extract_method)
+    _proxies: list[Proxy] = []
 
-create_proxies(proxies=_proxies)
-# proxy = '116.98.177.99:10003'
-# proxy_request: Optional[requests.Response] = CheckProxyRequest(destination_host=DESTINATION_HOST).request(host_and_port=proxy)
-# print(proxy_request.status_code)
-# print(proxy_request.json())
+    for proxy in proxies:
+        # Check if the proxy already exists in the database, if it does, ignore the check
+        proxy_ip, proxy_port = proxy.split(":")
+        if not exist_proxy(ip=proxy_ip, port=int(proxy_port)):
+            status_check: bool = proxy_request(proxy=proxy)
 
+            proxy_ip, proxy_port = proxy.split(":")
+            _proxies.append(
+                Proxy(
+                    ip=proxy_ip,
+                    port=int(proxy_port),
+                    status_check=status_check,
+                    ttl=TTL_PROXY,
+                    last_check=datetime.now(),
+                    extraction_method_id=extract_method.id
+                )
+            )
 
-
-
-
+    create_proxies(proxies=_proxies)

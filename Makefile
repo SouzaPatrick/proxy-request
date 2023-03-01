@@ -1,16 +1,20 @@
 ## @ Pre-commit
 .PHONY: format
-format:
+format: ## Format all code files
 	@pre-commit run --all-files
 
 
 ## @ Commands
-.PHONY: download-proxies console update
-download-proxies:
+.PHONY: proxy console update
+proxy: ## Download lists of public proxies
 	@python main.py
 
-console:
+console: ## List all valid proxies
 	@python console.py
 
-update:
+update: ## Revalidate valid proxies
 	@python update.py
+
+.PHONY: help
+help:
+	python help.py

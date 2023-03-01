@@ -24,16 +24,16 @@ class CheckProxyRequest:
         if self.destination_host:
             self.destination_host += str(destination_host_port)
 
-    def _get_session(self, host_and_port: str, protocol: str) -> requests.Session:
+    def _get_session(self, proxy: str, protocol: str) -> requests.Session:
         """
         Construct an HTTP session
-        :param host_and_port: HOST_IP:PORT of the proxy that will be used in the request attempt
-        :param protocol: http_https | sock4 | sock5
+        :param proxy: HOST_IP:PORT of the proxy that will be used in the request attempt
+        :param protocol: http | sock4 | sock5
         :return: Response from the request
         """
         session: requests.Session = requests.Session()
-        if protocol != "http_https":
-            session_host_and_port: str = f"{protocol}://{host_and_port}"
+        if protocol != "http":
+            session_host_and_port: str = f"{protocol}://{proxy}"
             session.proxies.update(
                 {
                     "http": session_host_and_port,
@@ -41,20 +41,20 @@ class CheckProxyRequest:
                 }
             )
         else:
-            session.proxies.update({"https": host_and_port, "http": host_and_port})
+            session.proxies.update({"https": proxy, "http": proxy})
 
         return session
 
     def request(
-        self, host_and_port: str, protocol: str = "http_https"
+        self, proxy: str, protocol: str
     ) -> Optional[requests.Response]:
         """
-        :param host_and_port: HOST_IP:PORT of the proxy that will be used in the request attempt
-        :param protocol: http_https | sock4 | sock5
+        :param proxy: HOST_IP:PORT of the proxy that will be used in the request attempt
+        :param protocol: http | sock4 | sock5
         :return: Response from the request
         """
         if self.destination_host:
-            session = self._get_session(host_and_port, protocol)
+            session = self._get_session(proxy, protocol)
             response: Optional[requests.Response] = session.get(
                 self.destination_host, timeout=self.timeout
             )
