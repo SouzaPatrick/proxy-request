@@ -2,6 +2,7 @@ from typing import NoReturn
 
 import pytest
 import requests
+
 from app.utils.check_proxy_request import CheckProxyRequest
 
 

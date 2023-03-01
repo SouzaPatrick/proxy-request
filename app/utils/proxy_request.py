@@ -9,7 +9,7 @@ from settings import DESTINATION_HOST
 console: Console = Console()
 
 
-def proxy_request(proxy: str, protocol: str = 'http') -> bool:
+def proxy_request(proxy: str, protocol: str = "http") -> bool:
     try:
         _proxy_request: Optional[requests.Response] = CheckProxyRequest(
             destination_host=DESTINATION_HOST

@@ -1,14 +1,16 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
 
-from sqlmodel import Field, SQLModel, Relationship, Column, String
+from sqlmodel import Column, Field, Relationship, SQLModel, String
 
 
 class Protocol(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
 
-    extraction_method: List["ExtractionMethod"] = Relationship(back_populates="protocol")
+    extraction_method: list["ExtractionMethod"] = Relationship(
+        back_populates="protocol"
+    )
 
 
 class ExtractionMethod(SQLModel, table=True):
@@ -18,7 +20,7 @@ class ExtractionMethod(SQLModel, table=True):
     priority: int
     method: str
 
-    proxy: List["Proxy"] = Relationship(back_populates="extraction_method")
+    proxy: list["Proxy"] = Relationship(back_populates="extraction_method")
 
     protocol_id: Optional[int] = Field(default=None, foreign_key="protocol.id")
     protocol: Optional[Protocol] = Relationship(back_populates="extraction_method")
@@ -33,7 +35,7 @@ class Proxy(SQLModel, table=True):
     ttl: int  # Minutes
     last_check: datetime
 
-    extraction_method_id: Optional[int] = Field(default=None, foreign_key="extractionmethod.id")
+    extraction_method_id: Optional[int] = Field(
+        default=None, foreign_key="extractionmethod.id"
+    )
     extraction_method: Optional[ExtractionMethod] = Relationship(back_populates="proxy")
-
-

@@ -3,7 +3,7 @@ from typing import Optional
 from rich import box, print
 from rich.table import Table
 
-from app.db_functions import get_valid_proxies, get_protocol_with_id
+from app.db_functions import get_protocol_with_id, get_valid_proxies
 from app.models import Proxy
 
 table = Table(title="Table of valid proxies", box=box.SIMPLE)

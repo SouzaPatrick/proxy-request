@@ -45,9 +45,7 @@ class CheckProxyRequest:
 
         return session
 
-    def request(
-        self, proxy: str, protocol: str
-    ) -> Optional[requests.Response]:
+    def request(self, proxy: str, protocol: str) -> Optional[requests.Response]:
         """
         :param proxy: HOST_IP:PORT of the proxy that will be used in the request attempt
         :param protocol: http | sock4 | sock5

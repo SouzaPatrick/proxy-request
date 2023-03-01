@@ -7,12 +7,15 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlmodel import Session, select
 
 from app.database import get_engine
-from app.models import Proxy, Protocol, ExtractionMethod
+from app.models import ExtractionMethod, Protocol, Proxy
 
 
 def get_valid_proxies() -> Optional[list[Proxy]]:
     query = (
-        select(Proxy).where(Proxy.status_check == True).options(joinedload("extraction_method")).order_by(desc(Proxy.last_check))
+        select(Proxy)
+        .where(Proxy.status_check == True)
+        .options(joinedload("extraction_method"))
+        .order_by(desc(Proxy.last_check))
     )
     try:
         with Session(get_engine()) as session:
@@ -21,6 +24,7 @@ def get_valid_proxies() -> Optional[list[Proxy]]:
         result: Optional[list[Proxy]] = None
 
     return result
+
 
 def get_protocol_with_id(protocol_id: int):
     query = select(Protocol).where(Protocol.id == protocol_id)
@@ -31,16 +35,15 @@ def get_protocol_with_id(protocol_id: int):
         result = None
 
     return result
+
+
 def get_extract_methods() -> list[ExtractionMethod]:
-    query = (
-        select(ExtractionMethod).order_by(ExtractionMethod.priority)
-    )
+    query = select(ExtractionMethod).order_by(ExtractionMethod.priority)
 
     with Session(get_engine()) as session:
         result: list[ExtractionMethod] = session.execute(query).scalars().all()
 
     return result
-
 
 
 def exist_proxy(ip: str, port: int) -> bool:
@@ -75,10 +78,10 @@ def create_proxies(proxies: list[Proxy]) -> NoReturn:
 # Populate db
 def populate_protocol() -> NoReturn:
     protocols: list[Protocol] = [
-        Protocol(name='http'),
-        Protocol(name='sock4'),
-        Protocol(name='sock5'),
-        Protocol(name='other'),
+        Protocol(name="http"),
+        Protocol(name="sock4"),
+        Protocol(name="sock5"),
+        Protocol(name="other"),
     ]
 
     with Session(get_engine()) as session:
@@ -89,8 +92,20 @@ def populate_protocol() -> NoReturn:
 
 def populate_extraction_method() -> NoReturn:
     extraction_methods: list[ExtractionMethod] = [
-        ExtractionMethod(name='sslproxies', url='https://www.sslproxies.org', protocol_id=1, priority=0, method='website_table_with_contry_code'),
-        ExtractionMethod(name='freeproxy', url="https://free-proxy-list.net/", protocol_id=1, priority=0, method='website_table_with_contry_code'),
+        ExtractionMethod(
+            name="sslproxies",
+            url="https://www.sslproxies.org",
+            protocol_id=1,
+            priority=0,
+            method="website_table_with_contry_code",
+        ),
+        ExtractionMethod(
+            name="freeproxy",
+            url="https://free-proxy-list.net/",
+            protocol_id=1,
+            priority=0,
+            method="website_table_with_contry_code",
+        ),
     ]
 
     with Session(get_engine()) as session:

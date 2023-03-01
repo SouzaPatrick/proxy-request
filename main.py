@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from app.db_functions import create_proxies, exist_proxy, get_extract_methods
-from app.models import Proxy, ExtractionMethod
+from app.models import ExtractionMethod, Proxy
 from app.utils.extract_proxy_list.search_method import search_method
-from settings import TTL_PROXY
 from app.utils.proxy_request import proxy_request
+from settings import TTL_PROXY
 
 extract_methods: list[ExtractionMethod] = get_extract_methods()
 
@@ -26,7 +26,7 @@ for extract_method in extract_methods:
                     status_check=status_check,
                     ttl=TTL_PROXY,
                     last_check=datetime.now(),
-                    extraction_method_id=extract_method.id
+                    extraction_method_id=extract_method.id,
                 )
             )
 
