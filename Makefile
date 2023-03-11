@@ -5,12 +5,15 @@ format: ## Format all code files
 
 
 ## @ Start project
-.PHONY: install
-install: ## Create/Reset the database
+.PHONY: install reset_db
+
+install: reset_db## Create/Reset the database
+	
+reset_db:
 	@python generate_db.py
 
-## @ Commands
-.PHONY: proxy console update
+## @ Commands proxy
+.PHONY: proxy console update test
 proxy: ## Download lists of public proxies
 	@python main.py
 
@@ -21,7 +24,7 @@ update: ## Revalidate valid proxies
 	@python update.py
 
 test: ## Run tests
-	@pytest -v
+	@pytest --cov=app tests/
 
 .PHONY: help
 help:
