@@ -1,4 +1,3 @@
-import pytest
 import requests
 
 from app.utils.proxy_request import proxy_request
