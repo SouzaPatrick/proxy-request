@@ -10,7 +10,7 @@ from app.models import ExtractionMethod, Protocol, Proxy
 from database import get_engine
 
 
-def get_valid_proxies() -> Optional[list[Proxy]]:
+def get_valid_proxies(session: Session) -> list[Proxy]:
     query = (
         select(Proxy)
         .where(Proxy.status_check == True)
@@ -18,19 +18,17 @@ def get_valid_proxies() -> Optional[list[Proxy]]:
         .order_by(desc(Proxy.last_check))
     )
     try:
-        with Session(get_engine()) as session:
-            result: Optional[list[Proxy]] = session.execute(query).scalars().all()
+        result: list[Proxy] = session.execute(query).scalars().all()
     except NoResultFound:
-        result: Optional[list[Proxy]] = None
+        result: list[Proxy] = []
 
     return result
 
 
-def get_protocol_with_id(protocol_id: int):
+def get_protocol_with_id(session: Session, protocol_id: int) -> Optional[Protocol]:
     query = select(Protocol).where(Protocol.id == protocol_id)
     try:
-        with Session(get_engine()) as session:
-            result = session.execute(query).scalar()
+        result: Optional[Protocol] = session.execute(query).scalar()
     except NoResultFound:
         result = None
 

@@ -1,5 +1,6 @@
+from sqlalchemy import orm
 from sqlalchemy.future import Engine
-from sqlmodel import Session, create_engine
+from sqlmodel import create_engine
 from sqlmodel.pool import StaticPool
 
 
@@ -14,5 +15,5 @@ def get_engine() -> Engine:
     return engine
 
 
-def get_session() -> Session:
-    return Session(get_engine())
+engine: Engine = get_engine()
+Session = orm.scoped_session(orm.sessionmaker(bind=engine))
