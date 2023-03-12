@@ -2,23 +2,22 @@ import pytest
 from sqlalchemy.future import Engine
 from sqlmodel import Session, SQLModel
 
+from app import models
+from tests._factories import ProtocolFactory
 from tests.database import get_engine
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def db_setup():
     """Creates a database engine in memory."""
-    from app import models
-
     engine: Engine = get_engine()
-
     SQLModel.metadata.create_all(engine)
     yield
     SQLModel.metadata.drop_all(engine)
 
 
-@pytest.fixture(scope="function")
-def db_session(db_setup):
+@pytest.fixture(name="session")
+def session_fixture(db_setup):
     """
     Creates a database session for the function only,
     rollingback all commit to keep the test database
@@ -26,12 +25,10 @@ def db_session(db_setup):
     """
     engine: Engine = get_engine()
 
-    transaction = engine.connect().begin()
+    with Session(engine) as session:
+        yield session
 
-    session: Session = Session(engine)
 
-    yield session
-
-    session.close()
-
-    transaction.rollback()
+@pytest.fixture
+def protocol(db_setup):
+    return ProtocolFactory()
