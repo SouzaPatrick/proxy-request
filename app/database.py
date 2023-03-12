@@ -3,8 +3,6 @@ from typing import NoReturn
 from sqlalchemy.future import Engine
 from sqlmodel import SQLModel, create_engine
 
-from app import models
-
 
 def get_engine() -> Engine:
     sqlite_file_name = "database.db"
@@ -16,5 +14,7 @@ def get_engine() -> Engine:
 
 
 def create_db_and_tables() -> NoReturn:
+    from app import models
+
     engine: Engine = get_engine()
     SQLModel.metadata.create_all(engine)
