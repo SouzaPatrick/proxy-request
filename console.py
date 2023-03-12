@@ -3,7 +3,7 @@ from typing import Optional
 from rich import box, print
 from rich.table import Table
 
-from app.db_functions import get_protocol_with_id, get_valid_proxies
+from app.db_functions import get_protocol_with_id
 from app.models import Proxy
 from database import get_session
 
@@ -15,7 +15,7 @@ table.add_column("Protocol")
 table.add_column("Last check")
 
 with get_session() as session:
-    proxies: Optional[list[Proxy]] = get_valid_proxies(session=session)
+    proxies: Optional[list[Proxy]] = Proxy.get_all_valid_proxies(session=session)
 
 for index, proxy in enumerate(proxies):
     with get_session() as session:

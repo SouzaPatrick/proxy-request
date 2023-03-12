@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import desc
+from sqlalchemy.orm import joinedload
 from sqlalchemy.orm.exc import NoResultFound
-from sqlmodel import Column, Field, Relationship, SQLModel, String, select
+from sqlmodel import Column, Field, Relationship, Session, SQLModel, String, select
 
 
 class BaseModel(SQLModel):
@@ -82,3 +84,25 @@ class Proxy(BaseModel, table=True):
 
     def __repr__(self):
         return self.__str__()
+
+    @staticmethod
+    def get_all_valid_proxies(session: Session):
+        query = (
+            select(Proxy)
+            .where(Proxy.status_check == True)
+            .options(joinedload("extraction_method"))
+            .order_by(desc(Proxy.last_check))
+        )
+        try:
+            result: list[Proxy] = session.execute(query).scalars().all()
+        except NoResultFound:
+            result: list[Proxy] = []
+
+        return result
+
+    def update_status(self, session: Session, status_check: bool = False):
+        self.status_check = status_check
+        self.last_check = datetime.now()
+
+        session.add(self)
+        session.commit()

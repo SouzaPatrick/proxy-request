@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import NoReturn, Optional
 
 from sqlalchemy import desc
@@ -42,28 +41,6 @@ def get_extract_methods() -> list[ExtractionMethod]:
         result: list[ExtractionMethod] = session.execute(query).scalars().all()
 
     return result
-
-
-def exist_proxy(ip: str, port: int) -> bool:
-    query = select(Proxy).where(Proxy.ip == ip, Proxy.port == port)
-
-    with Session(get_engine()) as session:
-        result = session.execute(query).scalars().first()
-
-    if result:
-        return True
-    return False
-
-
-def update_status_check_proxy(
-    proxy: Proxy, status_check: bool = False, last_check: datetime = datetime.now()
-) -> NoReturn:
-    with Session(get_engine()) as session:
-        proxy.status_check = status_check
-        proxy.last_check = last_check
-
-        session.add(proxy)
-        session.commit()
 
 
 def create_proxies(proxies: list[Proxy]) -> NoReturn:
