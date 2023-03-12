@@ -27,3 +27,16 @@ def test_search_method_website_table_with_contry_code(mocker):
         "192.168.0.3:80",
         "192.168.0.4:80",
     ]
+
+
+def test_search_method_other():
+    extraction_method: ExtractionMethod = ExtractionMethod(
+        name="",
+        url="",
+        priority=0,
+        method="other",
+        protocol_id=1,
+    )
+    extraction_method.exists(name="", priority=0)
+    proxies: list[str] = search_method(extract_method=extraction_method)
+    assert proxies == []
