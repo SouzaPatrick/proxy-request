@@ -13,6 +13,8 @@ pre-commit  # https://github.com/pre-commit/pre-commit
 pytest
 pytest-mock
 pytest-cov
+factory-boy
+faker
 
 # Debug
 # ------------------------------------------------------------------------------
