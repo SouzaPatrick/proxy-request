@@ -29,7 +29,7 @@ def test_search_method_website_table_with_contry_code(mocker):
     ]
 
 
-def test_search_method_other():
+def test_search_method_other(session):
     extraction_method: ExtractionMethod = ExtractionMethod(
         name="",
         url="",
@@ -37,6 +37,6 @@ def test_search_method_other():
         method="other",
         protocol_id=1,
     )
-    extraction_method.exists(name="", priority=0)
+    extraction_method.exists(session=session, name="", priority=0)
     proxies: list[str] = search_method(extract_method=extraction_method)
     assert proxies == []

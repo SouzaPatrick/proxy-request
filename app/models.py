@@ -2,30 +2,28 @@ from datetime import datetime
 from typing import Optional
 
 from sqlalchemy.orm.exc import NoResultFound
-from sqlmodel import Column, Field, Relationship, Session, SQLModel, String, select
-
-from app.database import get_engine
+from sqlmodel import Column, Field, Relationship, SQLModel, String, select
 
 
 class BaseModel(SQLModel):
     created_at: datetime = Field(default_factory=datetime.now, nullable=False)
 
     @classmethod
-    def exists(cls, **kwargs) -> bool:
-        if cls.get_by_fields(**kwargs) is not None:
+    def exists(cls, session, **kwargs) -> bool:
+
+        if cls.get_by_fields(session=session, **kwargs) is not None:
             return True
         return False
 
     @classmethod
-    def get_by_fields(cls, **kwargs):
+    def get_by_fields(cls, session, **kwargs):
         query = select(cls)
 
         for field, value in kwargs.items():
             field_name = getattr(cls, field)
             query = query.filter(field_name == value)
         try:
-            with Session(get_engine()) as session:
-                result: Optional[cls] = session.execute(query).one()
+            result: Optional[cls] = session.execute(query).one()
             assert result is not None
         except (NoResultFound, AssertionError):
             result: Optional[cls] = None
