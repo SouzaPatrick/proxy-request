@@ -1,7 +1,5 @@
 from typing import NoReturn, Optional
 
-from sqlalchemy import desc
-from sqlalchemy.orm import joinedload
 from sqlalchemy.orm.exc import NoResultFound
 from sqlmodel import Session, select
 
