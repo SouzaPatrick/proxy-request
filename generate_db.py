@@ -1,7 +1,7 @@
 import os
 
-from app.database import create_db_and_tables
 from app.db_functions import populate_extraction_method, populate_protocol
+from database import create_db_and_tables
 
 # Remove SQLite DB
 sqlite_db: str = "database.db"
