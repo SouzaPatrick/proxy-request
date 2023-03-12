@@ -6,7 +6,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.orm.exc import NoResultFound
 from sqlmodel import Session, select
 
-from app.database import get_engine
+from database import get_engine
 from app.models import ExtractionMethod, Protocol, Proxy
 
 
