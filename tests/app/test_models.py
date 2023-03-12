@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlmodel import SQLModel
 
 from app.models import ExtractionMethod, Protocol, Proxy
+from tests._factories import ProxyFactory
 
 
 # Protocol
@@ -121,3 +122,22 @@ def test_proxy_exists_not_found(session):
     )
 
     assert proxy_exist is False
+
+
+def test_get_all_valid_proxies(session):
+    proxy: Proxy = ProxyFactory()
+    expected_result: Proxy = proxy
+    proxies: list[Proxy] = Proxy.get_all_valid_proxies(session=session)
+
+    assert len(proxies) == 1
+    assert proxies[0].id == expected_result.id
+    assert proxies[0].ip == expected_result.ip
+    assert proxies[0].status_check == expected_result.status_check
+    assert proxies[0].port == expected_result.port
+    assert proxies[0].last_check == expected_result.last_check
+
+
+def test_get_all_valid_proxies_not_found(session):
+    proxies: list[Proxy] = Proxy.get_all_valid_proxies(session=session)
+
+    assert proxies == []

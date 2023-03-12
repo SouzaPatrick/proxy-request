@@ -9,21 +9,6 @@ from app.models import ExtractionMethod, Protocol, Proxy
 from database import get_engine
 
 
-def get_valid_proxies(session: Session) -> list[Proxy]:
-    query = (
-        select(Proxy)
-        .where(Proxy.status_check == True)
-        .options(joinedload("extraction_method"))
-        .order_by(desc(Proxy.last_check))
-    )
-    try:
-        result: list[Proxy] = session.execute(query).scalars().all()
-    except NoResultFound:
-        result: list[Proxy] = []
-
-    return result
-
-
 def get_protocol_with_id(session: Session, protocol_id: int) -> Optional[Protocol]:
     query = select(Protocol).where(Protocol.id == protocol_id)
     try:
