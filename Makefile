@@ -8,7 +8,7 @@ format: ## Format all code files
 .PHONY: install reset_db
 
 install: reset_db## Create/Reset the database
-	
+
 reset_db:
 	@python generate_db.py
 
