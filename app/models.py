@@ -25,7 +25,7 @@ class BaseModel(SQLModel):
             field_name = getattr(cls, field)
             query = query.filter(field_name == value)
         try:
-            result: Optional[cls] = session.execute(query).one()
+            result: Optional[cls] = session.execute(query).scalar()
             assert result is not None
         except (NoResultFound, AssertionError):
             result: Optional[cls] = None
