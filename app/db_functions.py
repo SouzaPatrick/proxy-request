@@ -1,20 +1,9 @@
-from typing import NoReturn, Optional
+from typing import NoReturn
 
-from sqlalchemy.orm.exc import NoResultFound
 from sqlmodel import Session, select
 
 from app.models import ExtractionMethod, Protocol, Proxy
 from database import get_engine
-
-
-def get_protocol_with_id(session: Session, protocol_id: int) -> Optional[Protocol]:
-    query = select(Protocol).where(Protocol.id == protocol_id)
-    try:
-        result: Optional[Protocol] = session.execute(query).scalar()
-    except NoResultFound:
-        result = None
-
-    return result
 
 
 def get_extract_methods() -> list[ExtractionMethod]:

@@ -3,8 +3,7 @@ from typing import Optional
 from rich import box, print
 from rich.table import Table
 
-from app.db_functions import get_protocol_with_id
-from app.models import Proxy
+from app.models import Protocol, Proxy
 from database import get_session
 
 table = Table(title="Table of valid proxies", box=box.SIMPLE)
@@ -19,8 +18,8 @@ with get_session() as session:
 
 for index, proxy in enumerate(proxies):
     with get_session() as session:
-        protocol_name: str = get_protocol_with_id(
-            session=session, protocol_id=proxy.extraction_method.protocol_id
+        protocol_name: str = Protocol.get_by_fields(
+            session=session, id=proxy.extraction_method.protocol_id
         ).name
     table.add_row(
         str(index),
