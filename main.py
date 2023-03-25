@@ -10,7 +10,9 @@ from settings import TTL_PROXY
 extract_methods: list[ExtractionMethod] = get_extract_methods()
 
 for extract_method in extract_methods:
-    proxies: list[str] = search_method(extract_method=extract_method)
+    proxies: list[str] = search_method(
+        method=extract_method.method, url=extract_method.url
+    )
     _proxies: list[Proxy] = []
 
     for proxy in proxies:

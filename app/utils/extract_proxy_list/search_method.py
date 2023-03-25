@@ -1,11 +1,10 @@
-from app.models import ExtractionMethod
 from app.utils.extract_proxy_list.website_table import extract_proxy_list
 
 
-def search_method(extract_method: ExtractionMethod) -> list[str]:
-    match extract_method.method:
+def search_method(method: str, url=str) -> list[str]:
+    match method:
         case "website_table_with_contry_code":
-            proxies: list[str] = extract_proxy_list(url=extract_method.url)
+            proxies: list[str] = extract_proxy_list(url=url)
         case other:
             proxies: list[str] = []
             print(f"Invalid method: {other}")
