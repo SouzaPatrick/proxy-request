@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import NoReturn, Optional
 
 from sqlalchemy import desc
 from sqlalchemy.orm import joinedload
@@ -93,14 +93,11 @@ class Proxy(BaseModel, table=True):
             .options(joinedload("extraction_method"))
             .order_by(desc(Proxy.last_check))
         )
-        try:
-            result: list[Proxy] = session.execute(query).scalars().all()
-        except NoResultFound:
-            result: list[Proxy] = []
+        result: list[Proxy] = session.execute(query).scalars().all()
 
         return result
 
-    def update_status(self, session: Session, status_check: bool = False):
+    def update_status(self, session: Session, status_check: bool = False) -> NoReturn:
         self.status_check = status_check
         self.last_check = datetime.now()
 
