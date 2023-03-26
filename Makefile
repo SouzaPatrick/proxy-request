@@ -24,7 +24,7 @@ update: ## Revalidate valid proxies
 	@python update.py
 
 test: ## Run tests
-	@pytest --cov=app tests/
+	@pytest --cov-report term-missing --cov=app tests/
 
 .PHONY: help
 help:
