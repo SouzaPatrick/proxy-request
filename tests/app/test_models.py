@@ -230,3 +230,14 @@ def test_get_all_valid_proxies_not_found(session):
     proxies: list[Proxy] = Proxy.get_all_valid_proxies(session=session)
 
     assert proxies == []
+
+
+def test_update_status(session, proxy):
+    proxy_factory = session.merge(proxy)
+
+    assert proxy_factory.status_check is True
+
+    proxy_factory.update_status(session=session, status_check=False)
+    updated_proxy: Proxy = Proxy.get_by_fields(session=session, id=proxy_factory.id)
+
+    assert updated_proxy.status_check is False
