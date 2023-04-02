@@ -6,7 +6,6 @@ from sqlmodel import Session
 from app.models import ExtractionMethod, Proxy
 from app.utils.extract_proxy_list.search_method import search_method
 from app.utils.proxy_request import proxy_request
-from database import get_session
 from settings import TTL_PROXY
 
 
@@ -16,7 +15,7 @@ def create_proxies(session: Session, proxies: list[Proxy]) -> NoReturn:
         session.commit()
 
 
-with get_session() as session:
+def proxy(session: Session) -> NoReturn:
     extract_methods: list[
         ExtractionMethod
     ] = ExtractionMethod.get_all_extraction_methods_sorted_by_priority(session)
@@ -46,4 +45,4 @@ with get_session() as session:
                     )
                 )
 
-        create_proxies(proxies=_proxies)
+        create_proxies(session=session, proxies=_proxies)

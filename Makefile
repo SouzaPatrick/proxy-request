@@ -15,13 +15,13 @@ reset_db:
 ## @ Commands proxy
 .PHONY: proxy console update test
 proxy: ## Download lists of public proxies
-	@python main.py
+	@python run.py proxy
 
 console: ## List all valid proxies
-	@python console.py
+	@python run.py console
 
 update: ## Revalidate valid proxies
-	@python update.py
+	@python run.py update
 
 test: ## Run tests
 	@pytest --cov-report term-missing --cov=app tests/

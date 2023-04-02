@@ -48,7 +48,7 @@ class Protocol(BaseModel, table=True):
 
     # Populate db install project
     @staticmethod
-    def _populate_db(session):
+    def _populate_db(session: Session) -> list["Protocol"]:
         protocols: tuple[Protocol] = (
             Protocol(name="http"),
             Protocol(name="sock4"),
@@ -81,21 +81,21 @@ class ExtractionMethod(BaseModel, table=True):
 
     # Populate db install project
     @staticmethod
-    def _populate_db(session):
-        protocol_id = Protocol.get_by_fields(session=session, name="http")
+    def _populate_db(session, protocols: list[Protocol]):
+        protocol_http_id: int = Protocol.get_by_fields(session=session, name="http").id
 
         extraction_methods: list[ExtractionMethod] = (
             ExtractionMethod(
                 name="sslproxies",
                 url="https://www.sslproxies.org",
-                protocol_id=protocol_id,
+                protocol_id=protocol_http_id,
                 priority=0,
                 method="website_table_with_contry_code",
             ),
             ExtractionMethod(
                 name="freeproxy",
                 url="https://free-proxy-list.net/",
-                protocol_id=protocol_id,
+                protocol_id=protocol_http_id,
                 priority=0,
                 method="website_table_with_contry_code",
             ),

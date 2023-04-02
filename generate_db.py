@@ -16,6 +16,6 @@ create_db_and_tables()
 # Populate DB
 with get_session() as session:
     Protocol._populate_db(session)
-    ExtractionMethod._populate_db(session)
+    ExtractionMethod._populate_db(session=session)
 
 print("DB successfully reset")
