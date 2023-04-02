@@ -65,6 +65,16 @@ class ExtractionMethod(BaseModel, table=True):
     def __repr__(self):
         return self.__str__()
 
+    @staticmethod
+    def get_all_extraction_methods_sorted_by_priority(
+        session,
+    ) -> list["ExtractionMethod"]:
+        query = select(ExtractionMethod).order_by(ExtractionMethod.priority)
+
+        result: list[ExtractionMethod] = session.execute(query).scalars().all()
+
+        return result
+
 
 class Proxy(BaseModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -89,7 +99,7 @@ class Proxy(BaseModel, table=True):
     def get_all_valid_proxies(session: Session):
         query = (
             select(Proxy)
-            .where(Proxy.status_check == True)
+            .where(Proxy.status_check == True)  # noqa: E712
             .options(joinedload("extraction_method"))
             .order_by(desc(Proxy.last_check))
         )

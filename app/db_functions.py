@@ -1,18 +1,9 @@
 from typing import NoReturn
 
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from app.models import ExtractionMethod, Protocol, Proxy
 from database import get_engine
-
-
-def get_extract_methods() -> list[ExtractionMethod]:
-    query = select(ExtractionMethod).order_by(ExtractionMethod.priority)
-
-    with Session(get_engine()) as session:
-        result: list[ExtractionMethod] = session.execute(query).scalars().all()
-
-    return result
 
 
 def create_proxies(proxies: list[Proxy]) -> NoReturn:

@@ -129,6 +129,23 @@ def test_extraction_method_get_by_fields(session):
     assert extraction_method_factory.protocol_id == extraction_method.protocol_id
 
 
+def test_get_all_extraction_methods_sorted_by_priority(session, extraction_method):
+    expected_result: list[ExtractionMethod] = [extraction_method]
+
+    extract_methods: list[
+        ExtractionMethod
+    ] = ExtractionMethod.get_all_extraction_methods_sorted_by_priority(session)
+
+    assert len(extract_methods) == 1
+    assert extract_methods[0].id == expected_result[0].id
+    assert extract_methods[0].created_at == expected_result[0].created_at
+    assert extract_methods[0].name == expected_result[0].name
+    assert extract_methods[0].url == expected_result[0].url
+    assert extract_methods[0].priority == expected_result[0].priority
+    assert extract_methods[0].method == expected_result[0].method
+    assert extract_methods[0].protocol_id == expected_result[0].protocol_id
+
+
 # Proxy
 
 # -----------------------------------------------------------

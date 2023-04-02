@@ -1,13 +1,16 @@
 from datetime import datetime
 
-from app.db_functions import create_proxies, get_extract_methods
+from app.db_functions import create_proxies
 from app.models import ExtractionMethod, Proxy
 from app.utils.extract_proxy_list.search_method import search_method
 from app.utils.proxy_request import proxy_request
 from database import get_session
 from settings import TTL_PROXY
 
-extract_methods: list[ExtractionMethod] = get_extract_methods()
+with get_session() as session:
+    extract_methods: list[
+        ExtractionMethod
+    ] = ExtractionMethod.get_all_extraction_methods_sorted_by_priority(session)
 
 for extract_method in extract_methods:
     proxies: list[str] = search_method(
