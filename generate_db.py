@@ -1,7 +1,7 @@
 import os
 
-from app.db_functions import populate_extraction_method, populate_protocol
-from database import create_db_and_tables
+from app.models import ExtractionMethod, Protocol
+from database import create_db_and_tables, get_session
 
 # Remove SQLite DB
 sqlite_db: str = "database.db"
@@ -14,7 +14,8 @@ if os.path.isfile(sqlite_db):
 create_db_and_tables()
 
 # Populate DB
-populate_protocol()
-populate_extraction_method()
+with get_session() as session:
+    Protocol._populate_db(session)
+    ExtractionMethod._populate_db(session)
 
 print("DB successfully reset")

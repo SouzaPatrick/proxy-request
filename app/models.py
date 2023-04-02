@@ -46,6 +46,20 @@ class Protocol(BaseModel, table=True):
     def __repr__(self):
         return self.__str__()
 
+    # Populate db install project
+    @staticmethod
+    def _populate_db(session):
+        protocols: tuple[Protocol] = (
+            Protocol(name="http"),
+            Protocol(name="sock4"),
+            Protocol(name="sock5"),
+            Protocol(name="other"),
+        )
+
+        for protocol in protocols:
+            session.add(protocol)
+            session.commit()
+
 
 class ExtractionMethod(BaseModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -64,6 +78,32 @@ class ExtractionMethod(BaseModel, table=True):
 
     def __repr__(self):
         return self.__str__()
+
+    # Populate db install project
+    @staticmethod
+    def _populate_db(session):
+        protocol_id = Protocol.get_by_fields(session=session, name="http")
+
+        extraction_methods: list[ExtractionMethod] = (
+            ExtractionMethod(
+                name="sslproxies",
+                url="https://www.sslproxies.org",
+                protocol_id=protocol_id,
+                priority=0,
+                method="website_table_with_contry_code",
+            ),
+            ExtractionMethod(
+                name="freeproxy",
+                url="https://free-proxy-list.net/",
+                protocol_id=protocol_id,
+                priority=0,
+                method="website_table_with_contry_code",
+            ),
+        )
+
+        for extraction_method in extraction_methods:
+            session.add(extraction_method)
+            session.commit()
 
     @staticmethod
     def get_all_extraction_methods_sorted_by_priority(

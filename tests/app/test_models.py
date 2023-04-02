@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, select
 
 from app.models import BaseModel, ExtractionMethod, Protocol, Proxy
 from tests._factories import ExtractionMethodFactory, ProtocolFactory, ProxyFactory
@@ -43,6 +43,18 @@ def test_protocol_get_by_fields(session):
     assert protocol_factory.id == protocol.id
     assert protocol_factory.created_at == protocol.created_at
     assert protocol_factory.name == protocol.name
+
+
+def test_protocol_populate_db(session):
+    Protocol._populate_db(session=session)
+    query = select(Protocol)
+    result: list[Protocol] = session.execute(query).scalars().all()
+
+    assert len(result) == 4
+    assert result[0].name == "http"
+    assert result[1].name == "sock4"
+    assert result[2].name == "sock5"
+    assert result[3].name == "other"
 
 
 # Extraction Method
@@ -144,6 +156,21 @@ def test_get_all_extraction_methods_sorted_by_priority(session, extraction_metho
     assert extract_methods[0].priority == expected_result[0].priority
     assert extract_methods[0].method == expected_result[0].method
     assert extract_methods[0].protocol_id == expected_result[0].protocol_id
+
+
+def test_extraction_method_populate_db(session):
+    ExtractionMethod._populate_db(session=session)
+    query = select(ExtractionMethod)
+    result: list[ExtractionMethod] = session.execute(query).scalars().all()
+
+    assert len(result) == 2
+    assert result[0].name == "sslproxies"
+    assert result[0].url == "https://www.sslproxies.org"
+    assert result[0].method == "website_table_with_contry_code"
+
+    assert result[1].name == "freeproxy"
+    assert result[1].url == "https://free-proxy-list.net/"
+    assert result[1].method == "website_table_with_contry_code"
 
 
 # Proxy
