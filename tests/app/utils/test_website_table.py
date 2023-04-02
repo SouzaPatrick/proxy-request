@@ -1,6 +1,9 @@
 import pytest
 
-from app.utils.extract_proxy_list.website_table import extract_proxy_list
+from app.utils.extract_proxy_list.website_table import (
+    BaseCascadePipeline,
+    WebsiteTablePipeline,
+)
 
 
 class MockResponse:
@@ -26,13 +29,13 @@ def content_file():
     return response
 
 
-def test_extract_proxy_list_success(mocker, content_file):
+def test_website_table_pipeline_success(mocker, content_file):
     mocker.patch(
         "app.utils.extract_proxy_list.website_table.requests.get",
         return_value=content_file,
     )
 
-    proxies = extract_proxy_list(url="http://test.com")
+    proxies: list[str] = WebsiteTablePipeline(url="http://test.com").run()
 
     assert proxies == [
         "103.121.149.69:8080",
@@ -136,3 +139,7 @@ def test_extract_proxy_list_success(mocker, content_file):
         "78.138.98.115:3128",
         "81.12.44.197:3129",
     ]
+
+
+def test_base_cascade_pipeline_init():
+    assert BaseCascadePipeline().steps == ()

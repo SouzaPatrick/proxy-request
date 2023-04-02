@@ -12,7 +12,7 @@ from app.utils.extract_proxy_list.search_method import search_method
 )
 def test_search_method(_method, _expected_result, mocker):
     mocker.patch(
-        "app.utils.extract_proxy_list.search_method.extract_proxy_list",
+        "app.utils.extract_proxy_list.search_method.WebsiteTablePipeline.run",
         return_value=_expected_result,
     )
     proxies: list[str] = search_method(method=_method, url="http://teste.com")
