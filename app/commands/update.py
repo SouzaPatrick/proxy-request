@@ -1,12 +1,10 @@
-from typing import NoReturn
-
 from sqlmodel import Session
 
 from app.models import Proxy
 from app.utils.proxy_request import proxy_request
 
 
-def update_proxy_status(session: Session) -> NoReturn:
+def update_proxy_status(session: Session) -> None:
     valid_proxies: list[Proxy] = Proxy.get_all_valid_proxies(session=session)
 
     for valid_proxy in valid_proxies:
