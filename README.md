@@ -75,9 +75,9 @@ Commands
  - console: List all valid proxies
  - update: Revalidate valid proxies
 ```
-###### Obs: O comando ```make help``` funciona apenas dentro da ```venv``` pori precisa da lib ```rich``` que ja foi instalada no ```dev-requirements.txt```
+###### Obs: O comando ```make help``` funciona apenas dentro da ```venv``` pois precisa da lib ```rich``` que ja foi instalada no ```dev-requirements.txt```
 
-Para listar todas as proies válidas basta informar
+Para listar todas as proxies válidas basta informar
 ```bash
 $ make console
 
@@ -105,7 +105,7 @@ $ make console
   17   170.2.210.201:80       https://www.sslproxies.org   http       01/03/2023 19:49:47
 ```
 
-Para retestar as listas que consguiu e verificar se aquelas proxies ainda estão ativas, informe:
+Para retestar as listas que conseguiu e verificar se aquelas proxies ainda estão ativas, informe:
 ```bash
 $ make update
 ```
