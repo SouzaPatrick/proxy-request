@@ -159,6 +159,8 @@ def test_get_all_extraction_methods_sorted_by_priority(session, extraction_metho
 
 
 def test_extraction_method_populate_db(session):
+    ProtocolFactory(name="http")
+
     ExtractionMethod._populate_db(session=session)
     query = select(ExtractionMethod)
     result: list[ExtractionMethod] = session.execute(query).scalars().all()
@@ -174,6 +176,7 @@ def test_extraction_method_populate_db(session):
 
 
 # Proxy
+
 
 # -----------------------------------------------------------
 def test_proxy_parent_class():

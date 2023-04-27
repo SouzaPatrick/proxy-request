@@ -11,8 +11,7 @@ class BaseModel(SQLModel):
     created_at: datetime = Field(default_factory=datetime.now, nullable=False)
 
     @classmethod
-    def exists(cls, session, **kwargs) -> bool:
-
+    def exists(cls, session: Session, **kwargs) -> bool:
         if cls.get_by_fields(session=session, **kwargs) is not None:
             return True
         return False
@@ -81,7 +80,7 @@ class ExtractionMethod(BaseModel, table=True):
 
     # Populate db install project
     @staticmethod
-    def _populate_db(session, protocols: list[Protocol]):
+    def _populate_db(session: Session) -> NoReturn:
         protocol_http_id: int = Protocol.get_by_fields(session=session, name="http").id
 
         extraction_methods: list[ExtractionMethod] = (
@@ -107,7 +106,7 @@ class ExtractionMethod(BaseModel, table=True):
 
     @staticmethod
     def get_all_extraction_methods_sorted_by_priority(
-        session,
+        session: Session,
     ) -> list["ExtractionMethod"]:
         query = select(ExtractionMethod).order_by(ExtractionMethod.priority)
 
