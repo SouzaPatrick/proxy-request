@@ -21,9 +21,7 @@ def console(session: Session) -> NoReturn:
 
     for index, proxy in enumerate(proxies):
         with get_session() as session:
-            import ipdb
 
-            ipdb.set_trace()
             protocol_name: str = Protocol.get_by_fields(
                 session=session, id=proxy.extraction_method.protocol_id
             ).name
