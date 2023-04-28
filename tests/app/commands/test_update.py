@@ -6,7 +6,7 @@ from app.commands.update import update_proxy_status
 from app.models import Proxy
 
 
-def test_update(session, extraction_method, mocker):
+def test_update(session, mocker):
     valid_proxies: list[Proxy] = [
         Proxy(
             ip="0.0.0.0", port=80, ttl=0, status_check=True, last_check=datetime.now()
