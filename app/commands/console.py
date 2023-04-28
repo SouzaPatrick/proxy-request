@@ -1,14 +1,13 @@
-from typing import NoReturn, Optional
+from typing import Optional
 
 from rich import box, print
 from rich.table import Table
 from sqlmodel import Session
 
 from app.models import Protocol, Proxy
-from database import get_session
 
 
-def console(session: Session) -> NoReturn:
+def console(session: Session) -> None:
     table = Table(title="Table of valid proxies", box=box.SIMPLE)
     table.add_column("Nº")
     table.add_column("PROXY")
@@ -16,15 +15,13 @@ def console(session: Session) -> NoReturn:
     table.add_column("Protocol")
     table.add_column("Last check")
 
-    with get_session() as session:
-        proxies: Optional[list[Proxy]] = Proxy.get_all_valid_proxies(session=session)
+    proxies: Optional[list[Proxy]] = Proxy.get_all_valid_proxies(session=session)
 
     for index, proxy in enumerate(proxies):
-        with get_session() as session:
+        protocol_name: str = Protocol.get_by_fields(
+            session=session, id=proxy.extraction_method.protocol_id
+        ).name
 
-            protocol_name: str = Protocol.get_by_fields(
-                session=session, id=proxy.extraction_method.protocol_id
-            ).name
         table.add_row(
             str(index),
             f"{proxy.ip}:{proxy.port}",
