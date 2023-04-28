@@ -15,6 +15,7 @@ pytest-mock
 pytest-cov
 factory-boy
 faker
+freezegun
 
 # Debug
 # ------------------------------------------------------------------------------
