@@ -9,7 +9,7 @@ from app.utils.proxy_request import proxy_request
 from settings import TTL_PROXY
 
 
-def create_proxies(session: Session, proxies: list[Proxy]) -> NoReturn:
+def create_proxies(session: Session, proxies: list[Proxy]) -> None:
     for proxy in proxies:
         session.add(proxy)
         session.commit()
@@ -33,7 +33,6 @@ def proxy(session: Session) -> NoReturn:
             if not Proxy.exists(session=session, ip=proxy_ip, port=int(proxy_port)):
                 status_check: bool = proxy_request(proxy=proxy)
 
-                proxy_ip, proxy_port = proxy.split(":")
                 _proxies.append(
                     Proxy(
                         ip=proxy_ip,
