@@ -10,7 +10,6 @@ from tests.database import engine
 
 @pytest.fixture
 def db_setup():
-
     """Creates a database engine in memory."""
     SQLModel.metadata.create_all(engine)
     yield
@@ -35,7 +34,7 @@ def protocol() -> models.Protocol:
 
 
 @pytest.fixture
-def extraction_method(protocol) -> models.ExtractionMethod:
+def extraction_method(protocol: models.Protocol) -> models.ExtractionMethod:
     extraction_method_factory: models.ExtractionMethod = ExtractionMethodFactory(
         name="fake_extraction_method",
         url="http://test.com",
@@ -48,7 +47,7 @@ def extraction_method(protocol) -> models.ExtractionMethod:
 
 
 @pytest.fixture
-def proxy(extraction_method) -> models.Proxy:
+def proxy(extraction_method: models.ExtractionMethod) -> models.Proxy:
     proxy_factory: models.Proxy = ProxyFactory(
         ip="0.0.0.0",
         port=80,
