@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import NoReturn
 
 from sqlmodel import Session
 
@@ -15,7 +14,7 @@ def create_proxies(session: Session, proxies: list[Proxy]) -> None:
         session.commit()
 
 
-def proxy(session: Session) -> NoReturn:
+def proxy(session: Session) -> None:
     extract_methods: list[
         ExtractionMethod
     ] = ExtractionMethod.get_all_extraction_methods_sorted_by_priority(session)
